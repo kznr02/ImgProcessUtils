@@ -24,6 +24,15 @@
     <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="module\imgprogcess\imgprogcess.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="param.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="const.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -35,5 +44,16 @@
     <ClCompile Include="utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="module\imgprogcess\imgprocess.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="param.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="module\imgprogcess\Grayscale_16_to_8.bin">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -9,5 +9,7 @@
 
 // 添加要在此处预编译的标头
 #include "framework.h"
-
+#include "module/imgprogcess/imgprogcess.h"
+#include "utils.h"
+#include "param.h"
 #endif //PCH_H

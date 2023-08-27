@@ -1,17 +1,13 @@
 #pragma once
 
-#ifdef BUILD_TEST
-#define API_SYMBOL __declspec(dllexport)
-#else
-#define API_SYMBOL __declspec(dllimport)
-#endif
+#define UTILS_EXPORTS extern "C" __declspec(dllexport)
 
-#include <cinttypes>
+#include <cstdint>
 
-extern "C" {
-	API_SYMBOL uint16_t min(uint16_t* src);
+UTILS_EXPORTS uint8_t* utils_16to8(uint16_t* raw);
 
-	API_SYMBOL uint16_t max(uint16_t* src);
+UTILS_EXPORTS uint8_t* utils_pseudo_get(uint16_t* raw);
 
-	API_SYMBOL uint8_t* img_8to16(uint16_t* src);
-}
+UTILS_EXPORTS void utils_pseudo_init();
+
+UTILS_EXPORTS void modify_gain(uint8_t gain);
