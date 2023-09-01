@@ -13,6 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\cam_api">
+      <UniqueIdentifier>{cf544da4-e19e-44ca-b20f-6ad59b63887b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\imgprocessutils">
+      <UniqueIdentifier>{642f6a15-9529-4dbc-b8d6-c6f247e180c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\cam_api">
+      <UniqueIdentifier>{a3a9d803-ba62-47f3-885b-acbe11aa1447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\imgprocessutils">
+      <UniqueIdentifier>{8198a83b-c3f0-446a-b7e5-0c2224a014db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\default">
+      <UniqueIdentifier>{80051cba-e111-4e16-81ce-35849f6aa322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\def">
+      <UniqueIdentifier>{ed717f4f-74af-4fa2-b2ae-e62e98bca693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\def">
+      <UniqueIdentifier>{c74df28c-84bb-45c0-b7dd-530de492a1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\buffer">
+      <UniqueIdentifier>{26ccb16f-2193-460e-8082-a78793dba35b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\buffer">
+      <UniqueIdentifier>{dae32311-30b9-4c18-ae62-45f6bde89513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -24,31 +51,43 @@
     <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="module\cam_api\cam_api.h">
+      <Filter>头文件\cam_api</Filter>
+    </ClInclude>
     <ClInclude Include="module\imgprogcess\imgprogcess.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\imgprocessutils</Filter>
     </ClInclude>
     <ClInclude Include="param.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\def</Filter>
     </ClInclude>
     <ClInclude Include="const.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\def</Filter>
+    </ClInclude>
+    <ClInclude Include="module\buffer\buffer.h">
+      <Filter>头文件\buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="module\cam_api\cam_api.cpp">
+      <Filter>源文件\cam_api</Filter>
+    </ClCompile>
     <ClCompile Include="module\imgprogcess\imgprocess.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\imgprocessutils</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>源文件\default</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>源文件\default</Filter>
     </ClCompile>
     <ClCompile Include="param.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\def</Filter>
+    </ClCompile>
+    <ClCompile Include="module\buffer\buffer.cpp">
+      <Filter>源文件\buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

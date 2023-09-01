@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "module/imgprogcess/imgprogcess.h"
-#include <semaphore>
-#include <thread>
-#include <mutex>
 #include "utils.h"
 #include <iostream>
+#include "module/cam_api/cam_api.h"
+#include "const.h"
 
-static Utils utils;
+Utils utils;
+CamAPI cam_instance;
 
+//	图像处理接口暴露封装
 uint8_t* utils_16to8(uint16_t* raw) {
 	return img_16to8(raw);
 };
@@ -20,7 +21,11 @@ void utils_pseudo_init() {
 	initPseudoColorLUT();
 }
 
-uint8_t ret[IMG_WIDTH * IMG_HEIGHT * 3]{ 0 };
+void utils_pc_init() {
+	InitViewConvLUT();
+}
+
+uint8_t* ret_pseudo = new uint8_t[IMG_WIDTH * IMG_HEIGHT * 3] { 0 };
 uint8_t* utils_pseudo_get(uint16_t* raw) {
 	uint8_t* tmp;
 	auto index { 0 };
@@ -28,15 +33,29 @@ uint8_t* utils_pseudo_get(uint16_t* raw) {
 		for (auto&& x = 0; x < IMG_WIDTH; x++) {
 			tmp = getPseudoColor(param->param.min_PseudoColor, param->param.max_PseudoColor, 
 				raw[index], TRUE);
-			ret[(3 * index)] = tmp[0];
-			ret[(3 * index)+1] = tmp[1];
-			ret[(3 * index)+2] = tmp[2];
+			ret_pseudo[(3 * index)] = tmp[0];
+			ret_pseudo[(3 * index)+1] = tmp[1];
+			ret_pseudo[(3 * index)+2] = tmp[2];
 			index++;
 		}
 	}
-	return ret;
+	return ret_pseudo;
 }
 
+float* ret_pc = new float[IMG_WIDTH * IMG_HEIGHT * 3];
+uint8_t* utils_pc_get(uint16_t* depth) {
+	auto index{ 0 };
+	for (auto&& y = 0; y < IMG_HEIGHT; y++) {
+		for (auto&& x = 0; x < IMG_WIDTH; x++) {
+			auto tmp = Depth2PointCloud(ret_pc, depth[index], x, y);
+			ret_pc[index * 3] = tmp[0];
+			ret_pc[index * 3 + 1] = tmp[1];
+			ret_pc[index * 3 + 2] = tmp[2];
+		}
+	}
+}
+
+//	线程管理
 void start_thread() {
 	utils.start_thread();
 }
@@ -45,34 +64,71 @@ void stop_thread() {
 	utils.stop_thread();
 }
 
-void img_process_thread() {
-	while (true) {
-		utils.cs->acquire();
-		utils.amp_ret = utils_16to8(utils.amp_raw);
-		utils.depth_ret = utils_pseudo_get(utils.depth_raw);
+//	线程定义
+int img_fetch_thread() {
+	while (utils.t3_is_run) {
+		auto tmp = cam_instance.get_img();
+
+		auto&& ret_depth = utils_pseudo_get(tmp->img_depth.data);
+		if (tmp != NULL) {
+			if (utils.is_pc_enable) {
+				//	todo
+			} else {
+				auto&& ret_amp = utils_16to8(tmp->img_amplitude.data);
+				
+				cam_instance.store_img(ret_amp, ret_depth);
+			}
+			
+			
+		}
 	}
+	cam_instance.empty_buffer();
+	std::cout << "fetch thread exit" << std::endl;
+
+	return 0;
 }
 
-uint8_t* get_ret_img() {
-	return utils.send_img();
+//	图像结果获取函数
+uint8_t* get_ret_amp_img() {
+	return cam_instance.get_ret_amp();
 }
 
-void recv_img(uint16_t* amp_raw, uint16_t* depth_raw) {
-	utils.recv_img(amp_raw, depth_raw);
+uint8_t* get_ret_depth_img() {
+	return cam_instance.get_ret_depth();
+}
+
+
+//	CamAPI对外导出函数
+int connect_cam() {
+	return cam_instance.connect(param->param.devIP.data(), PORT_SERVER);
+}
+
+void disconnect_cam() {
+	cam_instance.disconnect();
+}
+
+//	Utils类成员函数实现
+Utils::Utils() {
+	std::cout << "Instance create" << std::endl;
+	this->amp_ret = nullptr;
+	this->depth_ret = nullptr;
+	this->t3 = nullptr;
+	this->t3_is_run = false;
+	this->is_pc_enable = false;
+}
+
+Utils::~Utils() {
+	delete this->t3;
 }
 
 void Utils::start_thread() {
-	this->t1 = new std::jthread{ img_process_thread };
+	this->t3_is_run = true;
+	this->t3 = new std::jthread{ img_fetch_thread };
 }
 
 void Utils::stop_thread() {
-	this->t1->request_stop();
-}
-
-void Utils::recv_img(uint16_t* amp_raw, uint16_t* depth_raw) {
-	this->amp_raw = amp_raw;
-	this->depth_raw = depth_raw;
-	this->cs->release(1);
+	this->t3_is_run = false;
+	delete this->t3;
 }
 
 uint8_t* Utils::ret_amp() {
@@ -81,23 +137,4 @@ uint8_t* Utils::ret_amp() {
 
 uint8_t* Utils::ret_depth() {
 	return this->depth_ret;
-}
-
-Utils::Utils() {
-	std::cout << "Instance create" << std::endl;
-	this->cs = new std::counting_semaphore<1>{ 0 };
-	this->bs = new std::binary_semaphore{ 0 };
-	this->amp_raw = nullptr;
-	this->depth_raw = nullptr;
-	this->amp_ret = nullptr;
-	this->depth_ret = nullptr;
-	this->t1 = nullptr;
-	this->message = 0;
-}
-
-Utils::~Utils() {
-	delete this->cs;
-	delete this->amp_raw;
-	delete this->depth_raw;
-	this->t1->request_stop();
 }
