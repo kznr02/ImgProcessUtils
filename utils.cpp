@@ -68,14 +68,12 @@ void stop_thread() {
 int img_fetch_thread() {
 	while (utils.t3_is_run) {
 		auto tmp = cam_instance.get_img();
-
-		auto&& ret_depth = utils_pseudo_get(tmp->img_depth.data);
 		if (tmp != NULL) {
+			auto&& ret_depth = utils_pseudo_get(tmp->img_depth.data);
 			if (utils.is_pc_enable) {
 				//	todo
 			} else {
 				auto&& ret_amp = utils_16to8(tmp->img_amplitude.data);
-				
 				cam_instance.store_img(ret_amp, ret_depth);
 			}
 			
