@@ -52,7 +52,7 @@ uint8_t* getPseudoColor(unsigned int min_val, unsigned int max_val, unsigned int
 //  µãÔÆ×ª»»
 float* view_conv_lut = new float[3 * IMG_HEIGHT * IMG_WIDTH] { 0 };
 
-float* Depth2PointCloud(float* pointCloud, uint16_t& depth, int x, int y) {
+float* Depth2PointCloud(uint16_t& depth, int x, int y) {
     int offset = y * IMG_WIDTH + x;
     float pc[3]{ 0 };
     pc[0] = *(view_conv_lut + offset * 3) * (depth);

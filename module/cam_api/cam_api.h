@@ -14,13 +14,19 @@ class CamAPI
 
 	STRC_IMG_ALL* get_img();
 
-	void store_img(uint8_t*& amp, uint8_t*& depth);
+	void store_amp(uint8_t*& amp);
+
+	void store_pseudo(uint8_t*& pseudo);
+
+	void store_pc(float*& pc);
 
 	int get_existed_cnt();
 
 	uint8_t* get_ret_amp();
 
 	uint8_t* get_ret_depth();
+
+	float* get_ret_pc();
 
 	void empty_buffer();
 

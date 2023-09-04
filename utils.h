@@ -17,6 +17,14 @@ UTILS_EXPORTS void utils_pseudo_init();
 
 UTILS_EXPORTS void utils_pc_init();
 
+UTILS_EXPORTS void utils_pc_enable();
+
+UTILS_EXPORTS void utils_pc_disable();
+
+UTILS_EXPORTS bool utils_pc_is_enabled();
+
+UTILS_EXPORTS float* utils_pc_get(uint16_t* depth);
+
 UTILS_EXPORTS void modify_gain(uint8_t gain);
 
 int amp_img_process_thread();

@@ -54,6 +54,6 @@ void initPseudoColorLUT(void);
 
 uint8_t* getPseudoColor(unsigned int min_val, unsigned int max_val, unsigned int val, bool is_rev);
 
-float* Depth2PointCloud(float* pointCloud, uint16_t& depth, int x, int y);
+float* Depth2PointCloud(uint16_t& depth, int x, int y);
 
 void InitViewConvLUT();

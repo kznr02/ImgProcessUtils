@@ -17,9 +17,16 @@ STRC_IMG_ALL* CamAPI::get_img() {
 	return tmp;
 }
 
-void CamAPI::store_img(uint8_t*& amp, uint8_t*& depth) {
+void CamAPI::store_amp(uint8_t*& amp) {
 	this->amp_ret_buf->add_item(amp);
-	this->depth_ret_buf->add_item(depth);
+}
+
+void CamAPI::store_pseudo(uint8_t*& pseudo) {
+	this->depth_ret_buf->add_item(pseudo);
+}
+
+void CamAPI::store_pc(float*& pc) {
+	this->pc_ret_buf->add_item(pc);
 }
 
 int CamAPI::get_existed_cnt() {
@@ -29,7 +36,7 @@ int CamAPI::get_existed_cnt() {
 uint8_t* CamAPI::get_ret_amp() {
 	auto tmp = this->amp_ret_buf->take();
 	if (tmp == nullptr) {
-		return NULL;
+		return nullptr;
 	} else {
 		return tmp;
 	}
@@ -38,7 +45,16 @@ uint8_t* CamAPI::get_ret_amp() {
 uint8_t* CamAPI::get_ret_depth() {
 	auto tmp = this->depth_ret_buf->take();
 	if (tmp == nullptr) {
-		return 0;
+		return nullptr;
+	} else {
+		return tmp;
+	}
+}
+
+float* CamAPI::get_ret_pc() {
+	auto tmp = this->pc_ret_buf->take();
+	if (tmp == nullptr) {
+		return nullptr;
 	} else {
 		return tmp;
 	}
@@ -51,8 +67,8 @@ void CamAPI::empty_buffer() {
 
 CamAPI::CamAPI() {
 	this->handle = 0;
-	this->amp_ret_buf = new Buffer<uint8_t*>(32);
-	this->depth_ret_buf = new Buffer<uint8_t*>(32);
+	this->amp_ret_buf = new Buffer<uint8_t*>(128);
+	this->depth_ret_buf = new Buffer<uint8_t*>(128);
 	this->pc_ret_buf = new Buffer<float*>(32);
 }
 

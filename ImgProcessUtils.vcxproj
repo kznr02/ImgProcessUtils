@@ -135,7 +135,7 @@
       <AdditionalLibraryDirectories>.\external\cam_sdk;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d ".\x64\Release\ImgProcessUtils.dll" "D:\CodeDir\python\EDS_PY\SDK"</Command>
+      <Command>xcopy /y /d ".\x64\Debug\ImgProcessUtils.dll" "D:\CodeDir\python\EDS_PY\SDK"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
