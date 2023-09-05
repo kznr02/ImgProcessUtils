@@ -63,6 +63,7 @@ float* utils_pc_get(uint16_t* depth) {
 			ret_pc[index * 3] = tmp[0];
 			ret_pc[index * 3 + 1] = tmp[1];
 			ret_pc[index * 3 + 2] = tmp[2];
+			index++;
 		}
 	}
 	return ret_pc;
@@ -110,7 +111,6 @@ int img_fetch_thread() {
 		#endif // _DEBUG
 
 	}
-	cam_instance.disconnect();
 	cam_instance.empty_buffer();
 	std::cout << "fetch thread exit" << std::endl;
 

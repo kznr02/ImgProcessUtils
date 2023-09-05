@@ -41,6 +41,8 @@ UTILS_EXPORTS uint8_t* get_ret_amp_img();
 
 UTILS_EXPORTS uint8_t* get_ret_depth_img();
 
+UTILS_EXPORTS float* get_ret_pc_img();
+
 UTILS_EXPORTS void recv_img(uint16_t* amp_raw, uint16_t* depth_raw);
 
 UTILS_EXPORTS int connect_cam();
